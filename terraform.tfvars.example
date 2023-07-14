@@ -1,0 +1,34 @@
+org_id = "123456789"
+billing_account = "123456-123456-123456"
+environment     = "workforce"
+folder_id       = "123456"
+location = "global"
+workforce_pool_id = "GoogleCloudAccess"
+wif_providers = [
+    {
+      provider_id     = "Okta SAML"
+      select_provider = "saml"
+      provider_config = {
+        idp_metadata_xml = ""
+      }
+    },
+    {
+      provider_id     = "Google OIDC"
+      select_provider = "oidc"
+      provider_config = {
+        issuer_uri = "https://accounts.google.com"
+        client_id  = "client-id"
+        web_sso_response_type             = "ID_TOKEN"               #optional
+        web_sso_assertion_claims_behavior = "ONLY_ID_TOKEN_CLAIMS"   #optional
+      }
+    }
+  ]
+
+ project_bindings = [
+    {
+      project_id     = "your_project_id"
+      roles          = ["roles/viewer"]
+      attribute      = "*"
+      all_identities = true
+    }
+  ]
