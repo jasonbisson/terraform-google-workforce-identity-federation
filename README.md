@@ -2,6 +2,9 @@
 
 This is module is used to create workforce identity pool and corrresponding providers . It will help your employees to access GCP services outside from Google cloud without leverage your external identity provider.
 
+## Demo Reference Architecture
+![Reference Architecture](diagram/Workforce.PNG)
+
 ## Prequisites
 
 Following role is required

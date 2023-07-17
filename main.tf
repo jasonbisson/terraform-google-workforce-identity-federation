@@ -49,6 +49,7 @@ resource "google_iam_workforce_pool" "pool" {
   session_duration  = var.session_duration
 }
 
+
 resource "google_iam_workforce_pool_provider" "provider" {
   provider          = google-beta
   for_each          = { for i in var.wif_providers : i.provider_id => i }
