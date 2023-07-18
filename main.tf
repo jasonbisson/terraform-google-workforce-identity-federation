@@ -56,7 +56,8 @@ resource "google_iam_workforce_pool_provider" "provider" {
   workforce_pool_id = google_iam_workforce_pool.pool.workforce_pool_id
   location          = google_iam_workforce_pool.pool.location
   provider_id       = each.value.provider_id
-  attribute_mapping = lookup(each.value, "attribute_mapping", null) == null ? null : each.value.attribute_mapping
+  #attribute_mapping = lookup(each.value, "attribute_mapping", null) == null ? null : each.value.attribute_mapping
+  attribute_mapping = var.attribute_mapping
 
   dynamic "saml" {
     for_each = lookup(each.value, "select_provider", null) == "saml" ? ["1"] : []
@@ -87,11 +88,11 @@ resource "google_iam_workforce_pool_provider" "provider" {
 }
 
 
-module "member_roles" {
-  source                  = "terraform-google-modules/iam/google//modules/member_iam"
-  for_each                = { for account in var.project_bindings : account.project_id => account }
-  service_account_address = "//iam.googleapis.com/${google_iam_workforce_pool.pool.name}/${each.value.attribute}"
-  prefix                  = each.value.all_identities == false ? "principal" : "principalSet"
-  project_id              = each.value.project_id
-  project_roles           = each.value.roles
-}
+#module "member_roles" {
+#  source                  = "terraform-google-modules/iam/google//modules/member_iam"
+#  for_each                = { for account in var.project_bindings : account.project_id => account }
+#  service_account_address = "//iam.googleapis.com/${google_iam_workforce_pool.pool.name}/${each.value.attribute}"
+#  prefix                  = each.value.all_identities == false ? "principal" : "principalSet"
+#  project_id              = each.value.project_id
+#  project_roles           = each.value.roles
+#}

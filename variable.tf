@@ -80,6 +80,11 @@ variable "wif_providers" {
   description = "Provider config"
 }
 
+variable "attribute_mapping" {
+  type        = map(string)
+  description = "attribute list"
+}
+
 variable "project_bindings" {
   type = list(object(
     {
