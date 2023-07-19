@@ -15,7 +15,7 @@
  */
 
 
-module "project" {
+module "workforce_project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 11.0"
 
@@ -40,7 +40,7 @@ resource "random_id" "random_suffix" {
 
 resource "google_iam_workforce_pool" "pool" {
   provider          = google-beta
-  workforce_pool_id = var.workforce_pool_id
+  workforce_pool_id = "${var.workforce_pool_id}-${random_id.random_suffix.hex}"
   parent            = "organizations/${var.org_id}"
   location          = var.location
   display_name      = var.display_name
@@ -56,7 +56,7 @@ resource "google_iam_workforce_pool_provider" "provider" {
   workforce_pool_id = google_iam_workforce_pool.pool.workforce_pool_id
   location          = google_iam_workforce_pool.pool.location
   provider_id       = each.value.provider_id
-  #attribute_mapping = lookup(each.value, "attribute_mapping", null) == null ? null : each.value.attribute_mapping
+
   attribute_mapping = var.attribute_mapping
 
   dynamic "saml" {
@@ -84,15 +84,14 @@ resource "google_iam_workforce_pool_provider" "provider" {
   display_name        = lookup(each.value, "display_name", null)
   description         = lookup(each.value, "description", null)
   disabled            = lookup(each.value, "disabled", false)
-  attribute_condition = lookup(each.value, "attribute_condition", null)
+  attribute_condition = var.attribute_condition
 }
 
 
-#module "member_roles" {
-#  source                  = "terraform-google-modules/iam/google//modules/member_iam"
-#  for_each                = { for account in var.project_bindings : account.project_id => account }
-#  service_account_address = "//iam.googleapis.com/${google_iam_workforce_pool.pool.name}/${each.value.attribute}"
-#  prefix                  = each.value.all_identities == false ? "principal" : "principalSet"
-#  project_id              = each.value.project_id
-#  project_roles           = each.value.roles
-#}
+resource "google_project_iam_member" "project_iam_member" {
+  project = module.workforce_project.project_id
+  role    = var.role
+  member  = "${var.prefix}://iam.googleapis.com/${google_iam_workforce_pool.pool.name}/group/${var.group_id}"
+}
+
+

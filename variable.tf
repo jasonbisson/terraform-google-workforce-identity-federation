@@ -85,20 +85,25 @@ variable "attribute_mapping" {
   description = "attribute list"
 }
 
-variable "project_bindings" {
-  type = list(object(
-    {
-      project_id     = string
-      roles          = list(string)
-      attribute      = string
-      all_identities = bool
-    }
-  ))
-
-  description = "Project bindings"
+variable "attribute_condition" {
+  type        = string
+  description = "Workforce Identity Pool Provider attribute condition expression"
 }
 
 
+variable "prefix" {
+  description = "Prefix member or group or serviceaccount"
+  type        = string
+  default     = "principalSet"
+}
 
+variable "role" {
+  description = "IAM role for Workforce testing"
+  type        = string
+}
 
+variable "group_id" {
+  description = "Group name in Identity Provider "
+  type        = string
+}
 

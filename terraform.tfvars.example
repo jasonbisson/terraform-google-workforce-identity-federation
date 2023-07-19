@@ -31,14 +31,7 @@ attribute_mapping = {
   "attribute.email" = "assertion.email"
 }
 
+attribute_condition = "'Your group in Identity Provider' in assertion.attributes.groups"
+group_id            = "A Group from your Identity Provider"
+role                = "roles/viewer"
 
-attribute-condition = "A Group from your Identity Provider"
-
-project_bindings = [
-  {
-    project_id     = "New Project or existing Project ID"
-    roles          = ["roles/viewer"]
-    attribute      = "*"
-    all_identities = true
-  }
-]
