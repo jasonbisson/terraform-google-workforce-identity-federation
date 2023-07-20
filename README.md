@@ -75,7 +75,7 @@ Save file as metadata.xml
 
 7. Replace idp_metadata_xml Terraform variable
 ```
-Convert metadata.xml file into a single string with forward \ before each ". 
+Convert metadata.xml file into a single string and forward slashes '\' before each qoute '"'. 
 The placeholder idp_metadata_xml variable is shows exactly what the format needs to be.
 Update the variable idp_metadata_xml in terraform.tfvars
 Redeploy to update the variable
@@ -183,3 +183,7 @@ resources of this module:
 
 The [Project Factory module][project-factory-module] can be used to
 provision a project with the necessary APIs enabled.
+
+
+### Troubleshooting
+So much trouble coming. Stay tuned.
