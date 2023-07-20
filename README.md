@@ -5,18 +5,90 @@ This is module is used to create workforce identity pool and corrresponding prov
 ## Demo Reference Architecture
 ![Reference Architecture](diagram/Workforce.PNG)
 
-## Prequisites
+The resources/services/activations/deletions that this module will create/trigger are:
+- Create a Google Cloud Project with unique suffix
+- Create a Workforce Identity Pool with unique suffix at Organization level
+- Create a SAML & OIDC Workload Identity Providers under Workforce pool
+- Update IAM Policy of new Google project using Group from Identity Provider
 
-Following role is required
-* `roles/iam.workforcePoolAdmin`
+## Usage
 
-Required APIs & Services:
+### 
+1. Clone repo
+```
+git clone https://github.com/jasonbisson/terraform-google-workforce-identity-federation.git
 
-* `cloudresourcemanager.googleapis.com`
-* `iam.googleapis.com`
-* `iamcredentials.googleapis.com`
-* `sts.googleapis.com`
+```
 
+2. Rename and update required variables in terraform.tvfars.template
+```
+mv terraform.tfvars.template terraform.tfvars
+#Update required variables
+```
+
+3. Execute Terraform commands with existing identity (human or service account) to build Workforce Identity Infrastructure.
+```
+cd ~/terraform-google-workforce-identity-federation/
+terraform init
+terraform plan
+terraform apply
+```
+
+4. Copy name of Workforce Identity Pool ID from Terraform output or gcloud command
+```
+gcloud iam workforce-pools list --location=global --organization=Your Organization ID --format="value(name)"
+``` 
+
+5. Create Okta Application to support SAML authetication
+```
+Login to https://<Your okta instance.okta.com>/ as Application Administrator
+Go to “Admin” console
+Go to Directory and create a group Google-<Pick a unique name> and assign your Okta idenity to group
+Create a new App Integration with SAML 2.0, “Google Cloud Console SSO <Pick a unique name>”
+Upload an Application Icon (Pick a fun icon)
+In “Configure SAML” enter below URLs
+Single sign-on URL: https://auth.cloud.google/signin-callback/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name>
+Audience URI (SP Entity ID): https://iam.googleapis.com/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name>
+Default RelayState: https://console.cloud.google/
+Name ID format: Unspecified
+Application username: Okta username
+Update application username on: Create and update
+Add Attribute Statements
+email  user.email
+department   user.department
+Add Group Attribute Statement
+groups Starts with Google-<Unique group created above>
+Are you a customer or partner Select “I'm an Okta customer adding an internal app”
+Save the application 
+Open the new application and click on Assignments tab
+Assign group Google-<Unique group created above> and save
+```
+
+6. Download Okta SAML Metadata xml file
+```
+Go to new application 
+Click on “View SAML Setup Instructions” on right side
+Click on Sign On 
+Go to Provide the following IDP metadata to your SP provider and copy all content
+Save file as metadata.xml
+```
+
+7. Replace idp_metadata_xml Terraform variable
+```
+Convert metadata.xml file into a single string with forward \ before each ". 
+The placeholder idp_metadata_xml variable is shows exactly what the format needs to be.
+Update the variable idp_metadata_xml in terraform.tfvars
+Redeploy to update the variable
+
+terraform plan
+terraform apply
+```
+8. 2 clicks to see if you nailed it 
+```
+Click on your new Okta Application
+Click on the continue signing into Google Cloud
+If you nailed it the Google Cloud Console will appear and the identity will have full view access to the new project
+```
 
 ## Sample 
 
@@ -27,8 +99,6 @@ module "workforce-identity-federation" {
 }
 
 ```
-
-
 
 ## Requirements
 
@@ -78,3 +148,38 @@ module "workforce-identity-federation" {
 | <a name="output_pool_name"></a> [pool\_name](#output\_pool\_name) | Pool name |
 | <a name="output_pool_state"></a> [pool\_state](#output\_pool\_state) | Pool state |
 | <a name="output_provider_id"></a> [provider\_id](#output\_provider\_id) | Provider id |
+
+
+## Requirements
+
+These sections describe requirements for using this module.
+
+### Software
+
+The following dependencies must be available:
+
+- [Terraform][terraform] v0.13 or above
+- [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.61 or above
+
+### Infrastructure deployment Account
+
+A account with the following roles must be used to provision
+the resources of this module:
+
+- Workforce Identity Pool Admin: `roles/iam.workforcePoolAdmin`
+- Project Creator 
+- Project Deleter
+- Billing User
+
+### APIs
+
+A project with the following APIs enabled must be used to host the
+resources of this module:
+
+- Secure Token Service: `sts.googleapis.com`
+- IAM Credentials: `iamcredentials.googleapis.com`
+- Cloud Resource Manager: `cloudresourcemanager.googleapis.com`
+- IAM: `iam.googleapis.com`
+
+The [Project Factory module][project-factory-module] can be used to
+provision a project with the necessary APIs enabled.
