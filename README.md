@@ -80,6 +80,8 @@ The placeholder idp_metadata_xml variable is shows exactly what the format needs
 Update the variable idp_metadata_xml in terraform.tfvars
 Redeploy to update the variable
 
+Optional: I'm testing out this script to print out the idp_metadata_xml in a single string.  build/print_metadata_xml.py
+
 terraform plan
 terraform apply
 ```
