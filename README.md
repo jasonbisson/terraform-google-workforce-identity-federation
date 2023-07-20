@@ -83,7 +83,7 @@ Redeploy to update the variable
 terraform plan
 terraform apply
 ```
-8. 2 clicks to see if you nailed it 
+8. Click away
 ```
 Click on your new Okta Application
 Click on the continue signing into Google Cloud
