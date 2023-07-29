@@ -41,8 +41,8 @@ gcloud iam workforce-pools list --location=global --organization=Your Organizati
 
 5. Create Okta Application to support SAML authetication
 
-Login to https://<Your okta instance.okta.com>/ as Application Administrator
-![Go to “Admin” console](diagram/admin.png)
+1. Login to https://<Your okta instance.okta.com>/ as Application Administrator
+2. ![Go to “Admin” console](diagram/admin.png)
 Go to Directory and create a group Google-<Pick a unique name> and assign your Okta idenity to group
 Create a new App Integration with SAML 2.0, “Google Cloud Console SSO <Pick a unique name>”
 Upload an Application Icon (Pick a fun icon)
