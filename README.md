@@ -47,6 +47,7 @@ gcloud iam workforce-pools list --location=global --organization=Your Organizati
 * Create a new App Integration with SAML 2.0, “Google Cloud Console SSO <Pick a unique name>”
 * Upload an Application Icon (Pick a fun icon)
 * In “Configure SAML” enter below URLs
+```
   Single sign-on URL: https://auth.cloud.google/signin-callback/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name>
   Audience URI (SP Entity ID): https://iam.googleapis.com/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name>
   Default RelayState: https://console.cloud.google/
@@ -58,6 +59,7 @@ gcloud iam workforce-pools list --location=global --organization=Your Organizati
   department   user.department
   Add Group Attribute Statement
   groups Starts with Google-<Unique group created above>
+```
 * Are you a customer or partner Select “I'm an Okta customer adding an internal app”
 * Save the application 
 * Open the new application and click on Assignments tab
@@ -65,13 +67,11 @@ gcloud iam workforce-pools list --location=global --organization=Your Organizati
 
 
 6. Download Okta SAML Metadata xml file
-```
-Go to new application 
-Click on “View SAML Setup Instructions” on right side
-Click on Sign On 
-Go to Provide the following IDP metadata to your SP provider and copy all content
-Save file as metadata.xml
-```
+* Go to new application 
+* Click on “View SAML Setup Instructions” on right side
+* Click on Sign On 
+* Go to Provide the following IDP metadata to your SP provider and copy all content
+* Save file as metadata.xml
 
 7. Replace idp_metadata_xml Terraform variable
 ```
