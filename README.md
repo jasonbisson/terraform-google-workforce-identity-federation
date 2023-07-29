@@ -41,30 +41,27 @@ gcloud iam workforce-pools list --location=global --organization=Your Organizati
 
 5. Create Okta Application to support SAML authetication
 
-Login to https://<Your okta instance.okta.com>/ as Application Administrator
-Go to “Admin” console
-Go to Directory and create a group Google-<Pick a unique name> and assign your Okta idenity to group
-Create a new App Integration with SAML 2.0, “Google Cloud Console SSO <Pick a unique name>”
-Upload an Application Icon (Pick a fun icon)
-In “Configure SAML” enter below URLs
-| Configuration | Value |
-|------|--------|
-| <a name="requirement_single_sign_on"></a> [Single sign-on URL](#requirement\_single_sign_on) | https://auth.cloud.google/signin-callback/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name> |
-Single sign-on URL: https://auth.cloud.google/signin-callback/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name>
-Audience URI (SP Entity ID): https://iam.googleapis.com/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name>
-Default RelayState: https://console.cloud.google/
-Name ID format: Unspecified
-Application username: Okta username
-Update application username on: Create and update
-Add Attribute Statements
-email  user.email
-department   user.department
-Add Group Attribute Statement
-groups Starts with Google-<Unique group created above>
-Are you a customer or partner Select “I'm an Okta customer adding an internal app”
-Save the application 
-Open the new application and click on Assignments tab
-Assign group Google-<Unique group created above> and save
+* Login to https://<Your okta instance.okta.com>/ as Application Administrator
+* Go to “Admin” console
+* Go to Directory and create a group Google-<Pick a unique name> and assign your Okta idenity to group
+* Create a new App Integration with SAML 2.0, “Google Cloud Console SSO <Pick a unique name>”
+* Upload an Application Icon (Pick a fun icon)
+* In “Configure SAML” enter below URLs
+  Single sign-on URL: https://auth.cloud.google/signin-callback/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name>
+  Audience URI (SP Entity ID): https://iam.googleapis.com/locations/global/workforcePools/<Your Pool Name>/providers/<Your Provider Name>
+  Default RelayState: https://console.cloud.google/
+  Name ID format: Unspecified
+  Application username: Okta username
+  Update application username on: Create and update
+  Add Attribute Statements
+  email  user.email
+  department   user.department
+  Add Group Attribute Statement
+  groups Starts with Google-<Unique group created above>
+* Are you a customer or partner Select “I'm an Okta customer adding an internal app”
+* Save the application 
+* Open the new application and click on Assignments tab
+* Assign group Google-<Unique group created above> and save
 
 
 6. Download Okta SAML Metadata xml file
