@@ -74,23 +74,21 @@ gcloud iam workforce-pools list --location=global --organization=Your Organizati
 * Save file as metadata.xml
 
 7. Replace idp_metadata_xml Terraform variable
+* Convert metadata.xml file into a single string and forward slashes '\' before each qoute '"'. 
+* The placeholder idp_metadata_xml variable is shows exactly what the format needs to be.
+* Update the variable idp_metadata_xml in terraform.tfvars
+* Redeploy to update the variable
+* Optional: A script under build/print_metadata_xml.py can be used to print the string
+
 ```
-Convert metadata.xml file into a single string and forward slashes '\' before each qoute '"'. 
-The placeholder idp_metadata_xml variable is shows exactly what the format needs to be.
-Update the variable idp_metadata_xml in terraform.tfvars
-Redeploy to update the variable
-
-Optional: I'm testing out this script to print out the idp_metadata_xml in a single string.  build/print_metadata_xml.py
-
 terraform plan
 terraform apply
 ```
+
 8. Click away
-```
-Click on your new Okta Application
-Click on the continue signing into Google Cloud
-If you nailed it the Google Cloud Console will appear and the identity will have full view access to the new project
-```
+* Click on your new Okta Application
+* Click on the continue signing into Google Cloud
+* If you nailed it the Google Cloud Console will appear and the identity will have full view access to the new project
 
 ## Sample 
 
